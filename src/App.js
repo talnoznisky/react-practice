@@ -1,15 +1,18 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import logo from './flower2.png';
 import './App.css';
+import Template from './template.js';
+import Navbar from './navbar.js';
 
 class App extends Component {
   render() {
     return (
       <div className="App">
+        <Navbar/>
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
           <p>
-            Edit <code>src/App.js</code> and save to reload.
+            Spinning <code>rosejawn.js</code> and share with a babe
           </p>
           <a
             className="App-link"
@@ -19,8 +22,11 @@ class App extends Component {
           >
             Learn React
           </a>
+          <Template/>
         </header>
+
       </div>
+
     );
   }
 }
