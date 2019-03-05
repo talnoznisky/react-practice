@@ -21,23 +21,28 @@ class Navbar extends Component {
           })
       })
   }
+  autoComplete = function(e){
+      var placeholder = "Search"
+      console.log(this.state.allSymbols[0]);
+      console.log("working");
+      return placeholder;
+  }
 
   searchOnSubmit = function(e){
     console.log('searching')
     e.preventDefault();
-    // console.log(e);
-    // console.log(e.target.querySelector('input'));
     var searchValue = document.getElementsByName('search')[0].value.toLowerCase();
 
-
     this.setState(state => { return { searchValue: searchValue } });
+    // var matchedSymbols = this.state.allSymbols.filter(function (e) { return e.symbol.toLowerCase() === searchValue || e.name.toLowerCase().indexOf(searchValue) >= 0 });
     var matchedSymbols = this.state.allSymbols.filter(function (e) { return e.symbol.toLowerCase() === searchValue || e.name.toLowerCase().indexOf(searchValue) >= 0 });
 
-    this.setState(state => { return { matchedSymbols: matchedSymbols } });
-
-    console.log(matchedSymbols)
-
+      if(this.props.hasOwnProperty('setMatchedSymbols')){
+          this.props.setMatchedSymbols(matchedSymbols);
+      }
+      this.setState({ matchedSymbols: matchedSymbols });
   }
+  
 
   render() {
     console.log('rendering');
@@ -71,8 +76,8 @@ class Navbar extends Component {
               <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
             </li>
           </ul>
-          <form class="form-inline my-2 my-lg-0" onSubmit={e => this.searchOnSubmit(e)}>
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="search" list="symbols"/>
+          <form class="form-inline my-2 my-lg-0" onSubmit={e => this.searchOnSubmit(e)} >
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="search" list="symbols" onKeyPress={e => this.autoComplete(e)}/>
             <datalist id="symbols">
                 {this.state.matchedSymbols.map(function(e){return <option value={e.symbol}>{e.name}</option> })}
             </datalist>
