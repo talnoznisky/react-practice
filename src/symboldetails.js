@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import * as d3 from "d3";
 
 class SymbolDetails extends Component {
     constructor(){
@@ -18,13 +19,14 @@ class SymbolDetails extends Component {
                         if(!this.props.showFullDetail){
                             this.setState(state => {return {loaded: true, data: data }});
                         } else{
-                            this.setState(state => {return {loaded: true, data: data.company, quote: data.quote, news: data.news, chart: data.chart }});
+                            this.setState(state => {return {loaded: true, data: data.company, quote: data.quote, news: data.news, chart: data.chart,
+                            dataset: d3.range(data.chart.length).map(function(d) { return {"y": data.chart[d].close } })
+                             }});
                         }
-
                     })
                 })
-        }
-    }
+              }
+            }
 
 
 
@@ -52,7 +54,10 @@ class SymbolDetails extends Component {
               <dd>${this.state.quote.high}</dd>
               <dt>Low:</dt>
               <dd>${this.state.quote.low}</dd>
+              {console.log(this.state.chart.length)}
+              {console.log(this.state.dataset)}
           </dl>
+
       </div>
 
 
