@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import * as d3 from "d3";
+import Chart from './chart.js';
 
 class SymbolDetails extends Component {
     constructor(){
@@ -8,6 +9,8 @@ class SymbolDetails extends Component {
             loaded: false
         }
     }
+
+
 
     componentDidMount(){
         if(!this.state.loaded){
@@ -20,7 +23,7 @@ class SymbolDetails extends Component {
                             this.setState(state => {return {loaded: true, data: data }});
                         } else{
                             this.setState(state => {return {loaded: true, data: data.company, quote: data.quote, news: data.news, chart: data.chart,
-                            dataset: d3.range(data.chart.length).map(function(d) { return {"y": data.chart[d].close } })
+                            n: data.chart.length, dataset: d3.range(data.chart.length).map(function(d) { return  [data.chart[d].close] }),
                              }});
                         }
                     })
@@ -34,8 +37,10 @@ class SymbolDetails extends Component {
 
 
     return (
-      <div className="m-1 p-4 bg-dark text-light" >
-      {!this.state.loaded ? <progress></progress> : <div>
+      <div className="m-1 p-4" >
+      {!this.state.loaded ? <progress></progress> :
+        <div>
+          <Chart data={this.state.dataset} size={[500,300]}/>
           <h1>{this.state.data.companyName}</h1>
           <p>{this.state.data.description}</p>
           <dl>
@@ -54,18 +59,14 @@ class SymbolDetails extends Component {
               <dd>${this.state.quote.high}</dd>
               <dt>Low:</dt>
               <dd>${this.state.quote.low}</dd>
-              {console.log(this.state.chart.length)}
-              {console.log(this.state.dataset)}
           </dl>
 
       </div>
-
-
-
     }
       {this.props.showFullDetail ? "" : <a className="btn btn-block btn-primary" href={"/details/" + this.props.symbol.symbol }>{this.props.symbol.name}</a>}
 
       </div>
+
     );
   }
 }
